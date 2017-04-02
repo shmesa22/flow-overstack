@@ -21,6 +21,7 @@
 class User < ApplicationRecord
   attr_accessor :login
   has_many :questions
+  has_many :answers
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
