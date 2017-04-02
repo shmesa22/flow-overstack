@@ -1,0 +1,22 @@
+<h1>Preguntas</h1>
+
+<%= link_to "Hacer pregunta", new_question_path %>
+
+<% @questions.each do |question| %>
+  <div>
+    <h2>Votos</h2>
+    <!-- <p><%= question.votes.count %></p> -->
+    <p>0</p>
+  </div>
+  <div>
+    <h2>Respuestas</h2>
+    <!-- <p><%= question.answers.count %></p> -->
+    <p>3</p>
+  </div>
+  <div>
+    <h1><%= link_to question.name, question_path %></h1>
+    <!-- <p><%= question.user.email %></p> -->
+    <p>por: alguien@cualquiera.com</p>
+    <p><%= question.created_at %></p>
+  </div>  
+<% end %>
