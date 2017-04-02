@@ -1,6 +1,11 @@
 class QuestionsController < ApplicationController
   def index
-    @questions = Question.all
+    if params[:search] != nil
+      search_key = "%#{params[:search]}%"
+      @questions = Question.where('name LIKE ? OR description LIKE ?', search_key, search_key)
+    else
+      @questions = Question.all
+    end
   end
 
   def show
