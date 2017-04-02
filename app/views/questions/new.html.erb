@@ -1,2 +1,13 @@
-<h1>Questions#new</h1>
-<p>Find me in app/views/questions/new.html.erb</p>
+<h1>Preguntar</h1>
+
+<%= form_for @question do |f| %>
+  <div>
+    <%= f.text_field :name, placeholder: "Preguntar" %>
+  </div>
+  <div>
+    <%= f.text_area :description, placeholder: "Descripción" %>
+  </div>
+  <div>
+    <%= f.submit "Preguntar" %>
+  </div>
+<% end %>
