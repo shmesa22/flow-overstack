@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   def index
+    @current_user = current_user
     if params[:search] != nil
       search_key = "%#{params[:search]}%"
       @questions = Question.where('name LIKE ? OR description LIKE ?', search_key, search_key)
