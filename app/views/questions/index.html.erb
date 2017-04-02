@@ -1,6 +1,11 @@
 <h1>Preguntas</h1>
 
-<%= link_to "Hacer pregunta", new_question_path %>
+<%= 
+  link_to_if(@current_user.nil?, "Hacer pregunta", new_user_session_path) do
+    link_to("Hacer pregunta", new_question_path)
+  end
+%>
+
 
 <% @questions.each do |question| %>
   <div>
