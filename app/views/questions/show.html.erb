@@ -10,6 +10,39 @@
 
 <div>
   <div>
+    <h2>Comentarios:</h2>
+    <% @question.comments.each do |comment| %>
+      <div>
+        <header><%= comment.user.username %></header>
+        <p><%= comment.content %></p>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    <% if @comment_q && @comment_q.errors.any? %>
+      <ul>
+        <% @comment_q.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    
+    <% if user_signed_in? %>
+      <%= form_for [@question, Comment.new] do |comment_field| %>
+        <div>
+          <%= comment_field.text_area :content, placeholder: "Comentario" %>
+        </div>
+        <div>
+          <%= comment_field.submit "Comentar" %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div>
+  <div>
     <h2>Repuestas:</h2>
     <% @question.answers.each do |answer| %>
       <div>
@@ -18,6 +51,7 @@
       </div>
     <% end %>
   </div>
+
   <div>
     <% if @answer && @answer.errors.any? %>
       <ul>
@@ -28,12 +62,12 @@
     <% end %>
     
     <% if user_signed_in? %>
-      <%= form_for [@question, Answer.new] do |f| %>
+      <%= form_for [@question, Answer.new] do |answer_field| %>
         <div>
-          <%= f.text_area :content, placeholder: "Reponder" %>
+          <%= answer_field.text_area :content, placeholder: "Respuesta" %>
         </div>
         <div>
-          <%= f.submit "Responder" %>
+          <%= answer_field.submit "Responder" %>
         </div>
       <% end %>
     <% end %>
