@@ -2,8 +2,41 @@
   <h2>Votos</h2>
   <p>2</p>
 </div>
+
 <div>
   <h1><%= @question.name %></h1>
   <p><%= @question.description.html_safe %></p>
+</div>
+
+<div>
+  <div>
+    <h2>Repuestas:</h2>
+    <% @question.answers.each do |answer| %>
+      <div>
+        <header><%= answer.user.username %></header>
+        <p><%= answer.content %></p>
+      </div>
+    <% end %>
+  </div>
+  <div>
+    <% if @answer && @answer.errors.any? %>
+      <ul>
+        <% @answer.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    
+    <% if user_signed_in? %>
+      <%= form_for [@question, Answer.new] do |f| %>
+        <div>
+          <%= f.text_area :content, placeholder: "Reponder" %>
+        </div>
+        <div>
+          <%= f.submit "Responder" %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
 </div>
 
