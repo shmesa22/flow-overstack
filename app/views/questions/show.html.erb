@@ -20,16 +20,16 @@
   </div>
 
   <div>
-    <% if @comment_q && @comment_q.errors.any? %>
+    <% if @comment && @comment.errors.any? %>
       <ul>
-        <% @comment_q.errors.full_messages.each do |msg| %>
+        <% @comment.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
       </ul>
     <% end %>
     
     <% if user_signed_in? %>
-      <%= form_for [@question, Comment.new] do |comment_field| %>
+      <%= form_for [@question, @question.comments.build] do |comment_field| %>
         <div>
           <%= comment_field.text_area :content, placeholder: "Comentario" %>
         </div>
@@ -48,6 +48,23 @@
       <div>
         <header><%= answer.user.username %></header>
         <p><%= answer.content %></p>
+      </div>
+      <div>
+        <% answer.comments.each do |comment| %>
+          <p><%= comment.content %></p>
+        <% end %>
+      </div>
+      <div>
+        <% if  user_signed_in? %>
+          <%= form_for [answer, answer.comments.build] do |comment_field| %>
+            <div>
+              <%= comment_field.text_area :content, placeholder: "Respuesta" %>
+            </div>
+            <div>
+              <%= comment_field.submit "Comentar" %>
+            </div>
+          <% end %>
+        <% end %>
       </div>
     <% end %>
   </div>

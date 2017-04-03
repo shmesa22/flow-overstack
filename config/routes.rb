@@ -7,4 +7,8 @@ Rails.application.routes.draw do
     resources :comments, only: [:create]
     resources :answers, only: [:create]
   end
+
+  resources :answers, only: [:show] do
+    resources :comments, only: [:create]
+  end
 end
