@@ -1,9 +1,16 @@
 class CommentsController < ApplicationController
   def create
-    @question = Question.find(params[:question_id])
-    @comment_q = @question.comments.create(comment_params)
+    if params[:question_id]
+      commentable = Question.find(params[:question_id])
+      @question = commentable
+    elsif params[:answer_id]
+      commentable = Answer.find(params[:answer_id])
+      @question = Question.find(commentable.question_id)
+    end
 
-    if @comment_q.errors.any?
+    @comment = commentable.comments.create(comment_params)
+
+    if @comment.errors.any?
       render 'questions/show'
     else
       redirect_to @question
