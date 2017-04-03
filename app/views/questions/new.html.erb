@@ -1,21 +1,25 @@
-<h1>Preguntar</h1>
+<div class="row">
+  <div class="col-sm-11 col-sm-offset-1">
+    <h1>Preguntar</h1>
 
-<% if @question.errors.any? %>
-  <ul>
-    <% @question.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
+    <% if @question.errors.any? %>
+      <ul>
+        <% @question.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
     <% end %>
-  </ul>
-<% end %>
 
-<%= form_for @question do |f| %>
-  <div>
-    <%= f.text_field :name, placeholder: "Preguntar" %>
+    <%= form_for @question do |f| %>
+      <div class="group-form">
+        <%= f.text_field :name, class: "form-control", placeholder: "Preguntar" %>
+      </div>
+      <div class="group-form">
+        <%= f.text_area :description, class: "form-control", placeholder: "Descripción" %>
+      </div>
+      <div>
+        <%= f.submit "Preguntar", class: "btn btn-primary pull-right" %>
+      </div>
+    <% end %>
   </div>
-  <div>
-    <%= f.text_area :description, placeholder: "Descripción" %>
-  </div>
-  <div>
-    <%= f.submit "Preguntar" %>
-  </div>
-<% end %>
+</div>

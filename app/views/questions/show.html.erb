@@ -1,36 +1,42 @@
-<div>
-  <% if user_signed_in? %>
-    <% if @question.voted_by? current_user %>
-        <%= link_to question_vote_path(@question), method: :delete do %>
-          <p><%= @question.votes.count %></p>
-        <% end %>
-    <% else %>
-        <%= link_to question_votes_path(@question), method: :post do %>
-          <p><%= @question.votes.count %></p>
-        <% end %>
-    <% end %>
-  <% else %>
-    <p><%= @question.votes.count %></p>
-  <% end %>
-</div>
-
-<div>
+<div class="row">
   <h1><%= @question.name %></h1>
-  <p><%= @question.description.html_safe %></p>
+  <div class="col-sm-1">
+    <% if user_signed_in? %>
+      <% if @question.voted_by? current_user %>
+          <%= link_to question_vote_path(@question), method: :delete do %>
+            <div>
+              <span class="glyphicon glyphicon-chevron-down"></span>
+              <%= @question.votes.count %>
+            </div> 
+          <% end %>
+      <% else %>
+          <%= link_to question_votes_path(@question), method: :post do %>
+            <div>
+              <span class="glyphicon glyphicon-chevron-up"></span>
+              <%= @question.votes.count %>
+            </div>
+          <% end %>
+      <% end %>
+    <% else %>
+      <p><%= @question.votes.count %></p>
+    <% end %>
+  </div>
+
+  <div class="col-sm-11">
+    <p><%= @question.description.html_safe %></p>
+  </div>
 </div>
 
-<div>
-  <div>
-    <h2>Comentarios:</h2>
+<div class="row">
+  <div class="col-sm-11 col-sm-offset-1">
     <% @question.comments.each do |comment| %>
       <div>
-        <header><%= comment.user.username %></header>
-        <p><%= comment.content.html_safe %></p>
+        <p>[<%= comment.user.username %>] <%= comment.content.html_safe %></p>
       </div>
     <% end %>
   </div>
 
-  <div>
+  <div class="col-sm-11 col-sm-offset-1">
     <% if @comment && @comment.errors.any? %>
       <ul>
         <% @comment.errors.full_messages.each do |msg| %>
@@ -41,11 +47,11 @@
     
     <% if user_signed_in? %>
       <%= form_for [@question, @question.comments.build] do |comment_field| %>
-        <div>
-          <%= comment_field.text_area :content, placeholder: "Comentario" %>
+        <div class="form-group">
+          <%= comment_field.text_area :content, class: "form-control", placeholder: "Comentario" %>
         </div>
         <div>
-          <%= comment_field.submit "Comentar" %>
+          <%= comment_field.submit "Comentar", class: "btn btn-primary pull-right" %>
         </div>
       <% end %>
     <% end %>
@@ -54,48 +60,60 @@
 
 <div>
   <div>
-    <h2>Repuestas:</h2>
+    <h2><%= @question.answers.count %> repuestas:</h2>
     <% @question.answers.each do |answer| %>
-      <div>
-        <div>
+      <div class="row">
+        <div class="col-sm-1">
           <% if user_signed_in? %>
             <% if answer.voted_by? current_user %>
                 <%= link_to answer_vote_path(answer), method: :delete do %>
-                  <p><%= answer.votes.count %></p>
+                  <div>
+                    <span class="glyphicon glyphicon-chevron-down"></span>
+                    <%= answer.votes.count %>
+                  </div>
                 <% end %>
             <% else %>
                 <%= link_to answer_votes_path(answer), method: :post do %>
-                  <p><%= answer.votes.count %></p>
+                  <div>
+                    <span class="glyphicon glyphicon-chevron-up"></span>
+                    <%= answer.votes.count %>
+                  </div>
                 <% end %>
             <% end %>
           <% else %>
             <p><%= answer.votes.count %></p>
           <% end %>
         </div>
-        <header><%= answer.user.username %></header>
-        <p><%= answer.content.html_safe %></p>
-      </div>
-      <div>
-        <% answer.comments.each do |comment| %>
-          <p><%= comment.content.html_safe %></p>
-        <% end %>
-      </div>
-      <div>
-        <% if  user_signed_in? %>
-          <%= form_for [answer, answer.comments.build] do |comment_field| %>
-            <div>
-              <%= comment_field.text_area :content, placeholder: "Respuesta" %>
-            </div>
-            <div>
-              <%= comment_field.submit "Comentar" %>
-            </div>
+
+        <div class="col-sm-11">
+          <header><%= answer.user.username %></header>
+          <p><%= answer.content.html_safe %></p>
+        </div>
+
+        <div class="col-sm-11 col-sm-offset-1">
+          <% answer.comments.each do |comment| %>
+            <p>[<%= comment.user.username %>] <%= comment.content.html_safe %></p>
           <% end %>
-        <% end %>
+        </div>
+
+        <div class="col-sm-11 col-sm-offset-1">
+          <% if user_signed_in? %>
+            <%= form_for [answer, answer.comments.build] do |comment_field| %>
+              <div clss="form-group">
+                <%= comment_field.text_area :content, class: "form-control", placeholder: "Respuesta" %>
+              </div>
+              <div>
+                <%= comment_field.submit "Comentar", class: "btn btn-primary pull-right" %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
       </div>
     <% end %>
   </div>
 
-  <div>
+  <div class="col-sm-9">
     <% if @answer && @answer.errors.any? %>
       <ul>
         <% @answer.errors.full_messages.each do |msg| %>
@@ -104,13 +122,14 @@
       </ul>
     <% end %>
     
+    <h2>Tu respuesta</h2>
     <% if user_signed_in? %>
       <%= form_for [@question, Answer.new] do |answer_field| %>
-        <div>
-          <%= answer_field.text_area :content, placeholder: "Respuesta" %>
+        <div class="form-group">
+          <%= answer_field.text_area :content, class: "form-control", rows: "10", placeholder: "Respuesta" %>
         </div>
         <div>
-          <%= answer_field.submit "Responder" %>
+          <%= answer_field.submit "Responder", class: "btn btn-primary pull-right" %>
         </div>
       <% end %>
     <% end %>
