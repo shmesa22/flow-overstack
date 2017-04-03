@@ -1,6 +1,17 @@
 <div>
-  <h2>Votos</h2>
-  <p>2</p>
+  <% if user_signed_in? %>
+    <% if @question.voted_by? current_user %>
+        <%= link_to question_vote_path(@question), method: :delete do %>
+          <p><%= @question.votes.count %></p>
+        <% end %>
+    <% else %>
+        <%= link_to question_votes_path(@question), method: :post do %>
+          <p><%= @question.votes.count %></p>
+        <% end %>
+    <% end %>
+  <% else %>
+    <p><%= @question.votes.count %></p>
+  <% end %>
 </div>
 
 <div>
@@ -46,6 +57,21 @@
     <h2>Repuestas:</h2>
     <% @question.answers.each do |answer| %>
       <div>
+        <div>
+          <% if user_signed_in? %>
+            <% if answer.voted_by? current_user %>
+                <%= link_to answer_vote_path(answer), method: :delete do %>
+                  <p><%= answer.votes.count %></p>
+                <% end %>
+            <% else %>
+                <%= link_to answer_votes_path(answer), method: :post do %>
+                  <p><%= answer.votes.count %></p>
+                <% end %>
+            <% end %>
+          <% else %>
+            <p><%= answer.votes.count %></p>
+          <% end %>
+        </div>
         <header><%= answer.user.username %></header>
         <p><%= answer.content %></p>
       </div>
