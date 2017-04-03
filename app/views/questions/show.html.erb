@@ -124,7 +124,8 @@
     
     <h2>Tu respuesta</h2>
     <% if user_signed_in? %>
-      <%= form_for [@question, Answer.new] do |answer_field| %>
+      <%= form_for @question.answers.new do |answer_field| %>
+        <%= answer_field.hidden_field :question_id, :value => @question.id %>
         <div class="form-group">
           <%= answer_field.text_area :content, class: "form-control", rows: "10", placeholder: "Respuesta" %>
         </div>

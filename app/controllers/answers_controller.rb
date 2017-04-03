@@ -1,7 +1,9 @@
 class AnswersController < ApplicationController
   def create
-    @question = Question.find(params[:question_id])
-    @answer = @question.answers.create(answer_params)
+    @answer = Answer.new(answer_params)
+    @question = Question.find(@answer.question_id)
+
+    @answer.save
 
     if @answer.errors.any?
       render 'questions/show'
@@ -12,6 +14,6 @@ class AnswersController < ApplicationController
 
   private
     def answer_params
-      params.require(:answer).permit(:content).merge(user: current_user)
+      params.require(:answer).permit(:content, :question_id).merge(user: current_user)
     end
 end
