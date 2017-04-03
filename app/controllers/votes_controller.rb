@@ -15,10 +15,10 @@ class VotesController < ApplicationController
 
   def destroy
     if params[:question_id]
-      votable = Question.find(params[:id])
+      votable = Question.find(params[:question_id])
       @question = votable
     elsif params[:answer_id]
-      votable = Answer.find(params[:id])
+      votable = Answer.find(params[:answer_id])
       @question = Question.find(votable.question_id)
     end
 
