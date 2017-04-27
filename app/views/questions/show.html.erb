@@ -4,14 +4,14 @@
     <% if user_signed_in? %>
       <% if @question.voted_by? current_user %>
           <%= link_to question_vote_path(@question), method: :delete do %>
-            <div>
+            <div class="vote-down">
               <span class="glyphicon glyphicon-chevron-down"></span>
               <%= @question.votes.count %>
             </div> 
           <% end %>
       <% else %>
           <%= link_to question_votes_path(@question), method: :post do %>
-            <div>
+            <div class="vote-up">
               <span class="glyphicon glyphicon-chevron-up"></span>
               <%= @question.votes.count %>
             </div>
@@ -31,7 +31,7 @@
   <div class="col-sm-11 col-sm-offset-1">
     <% @question.comments.each do |comment| %>
       <div>
-        <p>[<%= comment.user.username %>] <%= comment.content.html_safe %></p>
+        <p><span class="username"><%= comment.user.username %></span> <%= comment.content.html_safe %></p>
       </div>
     <% end %>
   </div>
@@ -67,14 +67,14 @@
           <% if user_signed_in? %>
             <% if answer.voted_by? current_user %>
                 <%= link_to answer_vote_path(answer), method: :delete do %>
-                  <div>
+                  <div class="vote-down">
                     <span class="glyphicon glyphicon-chevron-down"></span>
                     <%= answer.votes.count %>
                   </div>
                 <% end %>
             <% else %>
                 <%= link_to answer_votes_path(answer), method: :post do %>
-                  <div>
+                  <div class="vote-up">
                     <span class="glyphicon glyphicon-chevron-up"></span>
                     <%= answer.votes.count %>
                   </div>
@@ -86,13 +86,13 @@
         </div>
 
         <div class="col-sm-11">
-          <header><%= answer.user.username %></header>
+          <header><span class="username"><%= answer.user.username %></span></header>
           <p><%= answer.content.html_safe %></p>
         </div>
 
         <div class="col-sm-11 col-sm-offset-1">
           <% answer.comments.each do |comment| %>
-            <p>[<%= comment.user.username %>] <%= comment.content.html_safe %></p>
+            <p><span class="username"><%= comment.user.username %></span> <%= comment.content.html_safe %></p>
           <% end %>
         </div>
 
@@ -122,8 +122,8 @@
       </ul>
     <% end %>
     
-    <h2>Tu respuesta</h2>
     <% if user_signed_in? %>
+      <h2>Tu respuesta</h2>
       <%= form_for @question.answers.new do |answer_field| %>
         <%= answer_field.hidden_field :question_id, :value => @question.id %>
         <div class="form-group">

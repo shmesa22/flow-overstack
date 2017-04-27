@@ -13,11 +13,11 @@
     <% end %>
 
     <%= form_for @question do |f| %>
-      <div class="group-form">
+      <div class="form-group">
         <%= f.text_field :name, class: "form-control", placeholder: "Preguntar" %>
       </div>
-      <div class="group-form">
-        <%= f.text_area :description, class: "form-control", placeholder: "Descripción" %>
+      <div class="form-group">
+        <%= f.text_area :description, class: "form-control", placeholder: "Descripción", rows: "5" %>
       </div>
       <div>
         <%= f.submit "Preguntar", class: "btn btn-primary pull-right" %>

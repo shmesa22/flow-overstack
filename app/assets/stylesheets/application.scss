@@ -1,2 +1,11 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "questions";
+
+body {
+  background-color: #eee;
+}
+
+.navbar {
+  border-radius: 0;
+}
