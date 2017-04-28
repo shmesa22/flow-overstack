@@ -13,7 +13,7 @@ class CommentsController < ApplicationController
     if @comment.errors.any?
       render 'questions/show'
     else
-      redirect_to @question
+      redirect_to @question, notice: "Tu comentario fue publicado exitosamente"
     end
   end
 

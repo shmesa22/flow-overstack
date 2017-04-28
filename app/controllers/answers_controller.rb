@@ -8,7 +8,7 @@ class AnswersController < ApplicationController
     if @answer.errors.any?
       render 'questions/show'
     else
-      redirect_to @question
+      redirect_to @question, notice: "Tu respuesta fue publicada exitosamente"
     end
   end
 
