@@ -1,6 +1,21 @@
 <div class="row">
+
+<%- # comment form errors -%>
+  <% if @comment %>
+    <%= render 'layouts/error_messages', object: @comment %>
+  <% end %>
+
+<%- # answer form errors -%> 
+  <% if @answer %>
+    <%= render 'layouts/error_messages', object: @answer %>
+  <% end %>
+
   <h1><%= @question.name %></h1>
+
+<%- # vote question -%>
   <div class="col-sm-1">
+
+<%- # vote question if user is signed in -%>
     <% if user_signed_in? %>
       <% if @question.voted_by? current_user %>
           <%= link_to question_vote_path(@question), method: :delete do %>
@@ -17,16 +32,20 @@
             </div>
           <% end %>
       <% end %>
+
+<%- # question's votes count-%>
     <% else %>
       <p><%= @question.votes.count %></p>
     <% end %>
   </div>
 
+<%- # question's description -%>
   <div class="col-sm-11">
     <p><%= @question.description.html_safe %></p>
   </div>
 </div>
 
+<%- # question's comments and username -%>
 <div class="row">
   <div class="col-sm-11 col-sm-offset-1">
     <% @question.comments.each do |comment| %>
@@ -36,15 +55,10 @@
     <% end %>
   </div>
 
+<%- # comment question -%>
   <div class="col-sm-11 col-sm-offset-1">
-    <% if @comment && @comment.errors.any? %>
-      <ul>
-        <% @comment.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    <% end %>
-    
+
+<%- # comments' form if user is signed in -%>
     <% if user_signed_in? %>
       <%= form_for [@question, @question.comments.build] do |comment_field| %>
         <div class="form-group">
@@ -58,12 +72,17 @@
   </div>
 </div>
 
+
 <div>
   <div>
+
+<%- # queston's answers count -%>
     <h2><%= @question.answers.count %> repuestas:</h2>
     <% @question.answers.each do |answer| %>
       <div class="row">
         <div class="col-sm-1">
+
+<%- # vote answer if user is signed in -%>
           <% if user_signed_in? %>
             <% if answer.voted_by? current_user %>
                 <%= link_to answer_vote_path(answer), method: :delete do %>
@@ -80,22 +99,27 @@
                   </div>
                 <% end %>
             <% end %>
+
+<%- # answer's votes count -%>
           <% else %>
             <p><%= answer.votes.count %></p>
           <% end %>
         </div>
 
+<%- # answer and username -%>
         <div class="col-sm-11">
           <header><span class="username"><%= answer.user.username %></span></header>
           <p><%= answer.content.html_safe %></p>
         </div>
 
+<%- # answer comment's and username -%>
         <div class="col-sm-11 col-sm-offset-1">
           <% answer.comments.each do |comment| %>
             <p><span class="username"><%= comment.user.username %></span> <%= comment.content.html_safe %></p>
           <% end %>
         </div>
 
+<%- # comment (answer) form if user is signed in -%>
         <div class="col-sm-11 col-sm-offset-1">
           <% if user_signed_in? %>
             <%= form_for [answer, answer.comments.build] do |comment_field| %>
@@ -113,17 +137,11 @@
     <% end %>
   </div>
 
+<%- # answer question if user is signed in -%>
   <div class="col-sm-9">
-    <% if @answer && @answer.errors.any? %>
-      <ul>
-        <% @answer.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    <% end %>
-    
     <% if user_signed_in? %>
       <h2>Tu respuesta</h2>
+
       <%= form_for @question.answers.new do |answer_field| %>
         <%= answer_field.hidden_field :question_id, :value => @question.id %>
         <div class="form-group">
